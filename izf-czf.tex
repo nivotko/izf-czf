@@ -1,0 +1,283 @@
+\documentclass[12pt, a4paper]{article}
+%\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{extsizes}
+\usepackage{tcolorbox}
+\usepackage[english]{babel}
+%\usepackage{algorithm}
+\usepackage{braket}
+\usepackage[noend]{algpseudocode}
+%\frenchspacing % No double spacing between sentences
+%\linespread{1.2} % Set linespace
+\usepackage[lmargin=0.1\paperwidth, rmargin=0.1\paperwidth, tmargin=0.1\paperheight, bmargin=0.1\paperheight]{geometry} %margins
+%\usepackage{parskip}
+\usepackage{titletoc}
+\usepackage{mathptmx}
+\usepackage{bbold}
+\usepackage{graphicx}
+\title{{\bf IZF/CZF} Handout}
+\author{Raja Damanik\footnote{Master of Logic student, University of Amsterdam. Email: rajaoktovin@gmail.com}}
+\date{}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\usepackage{bm}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+
+\newcommand{\enc}[1]{\langle #1 \rangle}
+\newcommand{\dis}[1]{\lVert #1 \rVert}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\begin{document}
+\maketitle
+
+\section{Motivation}
+
+In similar spirit of classical set theory, intuitionistic set theory {\bf IZF} and constructive set theory {\bf CZF} are meant to provide the most powerful possible foundations or formalism for mathematicians (or logicians) who work in intuitionistic or constructive mathematics.
+The necessity of doing so is caused by the fact that some axioms in classical logic imply some laws that cannot be accepted in intuitionistic logic.
+Consequently, it is instructive to get rid of axioms that are not compatible with intuitionistic logic.
+Furthermore, if we want to be interested in foundation of constructive mathematics, it is also desirable to have an axiom that comes with good justification for why it is constructive.
+
+There are three kinds of axioms in classical set theory on its nature...
+
+
+We use intuitionistic logic instead of classical logic.
+Another important thing to consider is the way the axiom is written.
+This is because two axioms may be equivalent in classical logic but not equivalent in intuitionistic logic. 
+For example, there are two equivalent ways of writing foundation axiom, one stating that there is a minimal element in every set and the other one stating there is no infinite descending $\in$-chain, but they are not equivalent in intuitionistic logic.
+
+In this note, I will write a brief introduction to intuitionistic logic in Section 2. In Section 3, I give a table that puts the axioms in the theories side by side. The main content is Section 4, where I discuss each axiom shown in Section 3 and what it facilitates us in doing mathematics, the philosophical motivation of adding or removing them from the theory, and how it relates to other axioms.
+
+\section{Intuitionistic logic}
+
+A brief section that shows how to use intuitionistic logic and its power relative to classical logic.
+
+
+\section{Bird eye's view}
+
+We will talk about some important axioms in detail below.
+This table gives a bird eye's view of which axioms are used in which theory.
+
+We also introduce ${\bf CZF}_0$ as a fragment of ${\bf CZF}$ in order to talk about equivalence of some axioms in ${\bf CZF}$.
+\begin{center}
+\begin{tabular}{ |c|c|c|c| } 
+\hline
+${\bf ZF}$ & ${\bf IZF}$ & ${\bf CZF}_0$ & ${\bf CZF}$ \\ \hline 
+Extensionality & Extensionality & Extensionality & Extensionality\\ 
+Pairing & Pairing & Pairing & Pairing \\
+Union & Union & Union & Union \\
+Powerset & Powerset & - & \underline{\emph{Subset Collection}} \\
+Infinity & Infinity & \emph{Strong Infinity} &  \emph{Strong Infinity} \\
+Foundation & \emph{Set Induction} & - & \emph{Set Induction} \\
+Separation & Separation & \emph{Bounded Separation} & \emph{Bounded Separation} \\
+Replacement & \emph{Collection} & Replacement & \underline{\emph{Strong Collection}} \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{The axioms}
+\subsection{Extensionality, Pairing, and, Union}
+
+There are three axioms in classical set theory that are considered non-controversial in {\bf IZF} and {\bf CZF}.
+\begin{itemize}
+\item {\bf Extensionality:} 
+\begin{align*}
+(\forall x)(\forall y)(x=y \leftrightarrow (\forall z)(z \in x \leftrightarrow z \in y)).
+\end{align*}
+Axiom of extensionality talks about the equality of sets: they are equal if and only if they contain exactly the same elements.
+This axiom is not controversial in {\bf IZF} and {\bf CZF}.
+
+\item {\bf Pairing:} 
+\begin{align*}
+(\forall x)(\forall y)(\exists z)(\forall u)(u \in z \leftrightarrow u=x \vee u=y).
+\end{align*}
+Axiom of pairing talks about the existence of set of the form $\{x,y\}$; together with axiom of extensionality, such set is unique.
+This set is also considered harmless in {\bf IZF} and {\bf CZF} due to its relatively simple nature.
+
+\item {\bf Union:} 
+\begin{align*}
+(\forall x)((\exists y)(y \in x)\rightarrow (\exists y)(\forall z)(z \in y \leftrightarrow (\exists u)(z \in u \in x))) 
+\end{align*}
+With union axiom, we can construct set $\bigcup x = \{y:(\exists z)(y \in z \in x)\}$ from a non-empty set $x$; again together with axiom of extensionality, such set is unique.
+We can think that such construction is harmless since every element $y$ of $\bigcup x$ has an already-available witness for it to be included namely the element of $z$ in our given $x$.
+\end{itemize}
+
+\subsection{Separation and Bounded Separation}
+
+We consider separation axiom and its fragment called bounded separation axiom.
+Separation axiom allows us to define a new set that is a subset of a set $x$ whose elements are specified by some property $\phi$.
+This axiom is very handy and is still compatible with intuitionistic logic and hence is still part of {\bf IZF}.
+
+In constructive set theory, more requirement is desired.
+In this theory, the predicativity matters more and hence one should only define a set whose requirement is binding on previously constructed set only.
+To formalize this, a formula $\phi$ is called $\Delta_0$-formula, if every quantifier that appears in $\phi$ is bounded (namely, of the form $(\forall x \in y)$ or $(\exists x \in y)$.
+Then bounded separation axiom (sometimes also called $\Delta_0$-separation or restricted separation) is similar axiom with separation but the formula that separates is only restricted to $\Delta_0$.
+\begin{itemize}
+\item {\bf Separation:} If $\phi$ is a formula where $y$ does not occur freely in $\phi$, then there exists a set
+\begin{align*}
+(\forall x)(\exists y)(\forall z)(z \in y \leftrightarrow z \in x \wedge \phi(z)).
+\end{align*}
+\item {\bf Bounded Separation:} If $\phi$ is a $\Delta_0$-formula where $y$ does not occur freely in $\phi$, then 
+\begin{align*}
+(\forall x)(\exists y)(\forall z)(z \in y \leftrightarrow z \in x \wedge \phi(z)).
+\end{align*}
+\end{itemize}
+
+On side note, general comprehension principle (in place of separation axiom) still gives us inconsistent theory intuitionistically:
+\begin{itemize}
+\item {\bf General comprehension:} For every formula $\phi$ where $x$ does not occur freely in $\phi$:
+\begin{align*}
+(\exists x)(\forall y)(y \in x \leftrightarrow \phi(y)).
+\end{align*}
+\end{itemize}
+\begin{theorem}
+(Russell's Paradox)
+General comprehension principle is not valid.
+\end{theorem}
+\begin{proof}
+By general comprehension principle, $Y=\{x|x \notin x\}$ is a set.
+
+Firstly, assume $Y \in Y$. 
+By definition of $Y$, we have $Y \notin Y$.
+Together with our assumption $Y \in Y$, we reach contradiction.
+Hence, we have proved that $Y \notin Y$.
+But since $Y \notin Y$, then $Y \in Y$ by definition of $Y$ again.
+Thus, general comprehension principle gives us contradiction, i.e. general comprehension is not valid.
+\end{proof}
+
+\subsection{Replacement, Collection, and Strong Collection}
+
+% A formula $\phi(x,y)$ is called \emph{function formula} if for every $x$ there exists a unique $y$ such that $\phi(x,y)$.
+% If $\phi(x,y)$ is a function formula and $z$ is a set we write $F_\phi[z]=\{y:(\exists x)(x \in z \wedge \phi(x,y)\}$, namely the image of $F$ from $z$.
+
+We now look at the following three axioms:
+\begin{itemize}
+\item {\bf Replacement:} For any formula $\phi(x,y)$ where $z$ does not occur freely in $\phi$:
+\begin{align*}
+(\forall a)((\forall x \in a)(\exists ! y)\phi(x,y) \rightarrow (\exists b)(\forall x)(x \in b \leftrightarrow (\exists y \in a)\phi(x,y))).
+\end{align*}
+
+The replacement axiom tells that if the domain of a function is a set, then the image is also a set. 
+\item {\bf Collection:} For any formula $\phi(x,y)$ where $z$ does not occur freely in $\phi$:
+\begin{align*}
+(\forall a)((\forall x \in a)(\exists  y)\phi(x,y) \rightarrow (\exists b)(\forall x \in a)(\exists y \in b)\phi(x,y)).
+\end{align*}
+
+In natural language, the axiom of collection for formula $\phi$ tells us that given a set $a$ and a total relation with domain $a$, then there exists a set $b$ that collects at least one image of each element of $a$.
+
+\item {\bf Strong collection:} For any formula $\phi(x,y)$ where does not occur freely in $\phi$:
+\begin{align*}
+(\forall a)(((\forall x \in a)(\exists y)\phi(x,y)) \rightarrow (\exists b)((\forall y) 
+\end{align*}
+\end{itemize}
+
+The philosophical discussion about the intuitionistic or constructive version of axiom of replacement is a bit more complex.
+Some papers discussing this are for example in ... \textcolor{red}{To do: add reference}
+
+\subsection{Infinity and Strong Infinity}
+
+Now we look at infinity and strong infinity axiom.
+We give an abbreviation of formula as follows $\text{succ}(x,y):=(\forall z)(z \in y \leftrightarrow z \in x \vee z=x)$ and $\text{ind}(a):= \emptyset \in a \wedge (\forall y)(y \in a \rightarrow (\exists z \in a)\text{succ}(y,z))$.
+Here, $\emptyset$ is an abbreviation for the unique set (by extensionality) that contains no element.
+
+\begin{itemize}
+\item {\bf Infinity:} $(\exists a)(\text{ind}(a))$.
+\item {\bf Strong Infinity:} $(\exists a)(\text{ind}(a) \wedge (\forall b)(\text{ind}(b) \rightarrow (\forall x \in a)(x \in b))).$
+\end{itemize}
+
+Infinity axiom tells us that there exists a inductive set, namely the set such that for every element of it, there exists another element which contain that set and all of its element.
+With infinity axiom in ${\bf ZF}$, one can show define the set of all natural numbers as the least inductive set.
+This argument uses full separation axiom.
+Due to its impredicativity, we do not use full separation axiom and instead bounded separation takes place in ${\bf CZF}$.
+Since least inductive set is a nice way to talk about the set of natural numbers, in ${\bf CZF}$, we strengthen the infinity axiom to strong infinity axiom that states there exists an inductive set and the least inductive set.
+
+\subsection{Foundation and Set Induction}
+
+\begin{itemize}
+\item {\bf Foundation:} $$(\forall x)(\exists y) (y \in x \wedge x \cap y=\emptyset)$$
+
+In classical logic, there are two ways of stating foundation axiom (or also called regularity axiom).
+One way of doing it is to say that every element has a minimal element, which is as presented above.
+Another way of saying it is by the fact that there exists no descending $\in$-chain.
+\item {\bf Set Induction:} For all formula $\phi$: $$(\forall a)((\forall x \in a)\phi(x) \rightarrow \phi(a)) \rightarrow (\forall a)\phi(a).$$
+
+As we will show below, axiom of foundation as presented above is too strong for intuitionistic logic as it implies {\bf LEM}. 
+On the other hand, if another way of presenting it in classical logic using infinite descending $\in$-chain is used, we are unable to prove some property that is shared by all sets.
+One can show that foundation axiom indeed implies set induction; so we add a slightly weaker axiom that still allows us to do something considered important in mathematics.
+\end{itemize}
+
+Aside from axiom of foundation, we would like to also look at Foundation Schema:
+\begin{itemize}
+\item {\bf Foundation Schema:} For any formula $\phi$: $$(\exists x)\phi(x) \rightarrow (\exists x)(\phi(x) \wedge (\forall y \in x)\neg \phi(y)).$$
+\end{itemize}
+
+We now see how adding these axioms 
+
+\begin{theorem}
+\begin{enumerate}
+\item[(i)] ${\bf CZF}+\text{Foundation Schema}={\bf ZF}$.
+\item[(ii)] ${\bf CZF}+\text{Separation+Foundation Schema}={\bf ZF}$.
+\item[(iii)] ${\bf CZF}$+\text{Foundation Axiom} $\vDash {\bf REM}$.
+\item[(iv)] ${\bf CZF}$+\text{Foundation Axiom}$\vDash$Power Set.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textcolor{red}{to be completed}
+\end{proof}
+
+As corollary, in {\bf IZF}, axiom of foundation implies bounded version of {\bf LEM}, since bounded separation takes place instead of full separation.
+
+\subsection{Powerset and Subset Collection}
+
+One of the most interesting discussions in  the axiomatic freedom in constructive set theory is the power set axiom.
+\begin{itemize}
+\item {\bf Powerset:}
+$$(\forall x)(\exists y)(\forall z)(z \in y \leftrightarrow (\forall u)(u \in z \rightarrow u \in x)).$$
+
+Powerset axiom states that given a set $X$, the powerset $\mathcal{P}(X)$ exists. 
+
+\item {\bf Subset Collection:} For every formula $\psi(x,y,u)$, we have
+\begin{align*}(\forall a)(\forall b)((\exists c)(\forall u)((\forall x \in a)(\exists y \in b)\psi(x,y,u) \rightarrow \\ 
+(\exists d \in c)((\forall x \in a)(\exists y \in d)\psi(x,y,u) \wedge (\forall y \in d)(\exists x \in a) \psi(x,y,u)))).
+\end{align*}
+
+\item {\bf Fullness:} Given sets $A,B$, define $\text{mv}(^A B)$ be the class of all sets $R \subseteq A \times B$ such that $(\forall u \in A)(\exists v \in B) \langle u,v \rangle \in R\}$. A set $C$ is \emph{full in} $\text{mv}(^A B)$ if $C \subseteq \text{mv}(^A B)$ and $(\forall R \in \text{mv}(^A B))(\exists S \in C)S \subseteq R$. For all sets $A,B$, there is a set $C$ that is full in $\text{mv}(^A B)$.
+
+
+\item {\bf Exponentiation:} If $A$ and $B$ are sets, then $^A B=\{f|f:A \rightarrow B\}$ is also a set.
+\end{itemize}
+
+The following theorem gives an idea of what subset collection can do and how it is stated in a language that is more familiar; using total relation.
+\begin{theorem}
+\begin{enumerate}
+\item (${\bf CZF}_0$) Subset collection implies Exponentiation.
+\item (${\bf CZF}_0$ + Strong Collection) Subset collection is equivalent to Fullness.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textcolor{red}{to be completed}
+\end{proof}
+
+
+\section{Axiom of Choice}
+
+We state below axiom of choice and some versions of axiom of choice.
+\begin{itemize}
+\item {\bf Axiom of Choice (AC):}
+\item {\bf Axiom of Dependent Choice (DC):}
+\item {\bf Axiom of Choice - Omega (${\bf AC_\omega}$):}
+\end{itemize}
+
+\section{Conclusion}
+
+In this note, we have discussed some axioms that are used in intuitionistic set theory ${\bf IZF}$ and constructive set theory ${\bf CZF}$.
+In constructive set theory, it seems like the each axiom requires more philosophical justification to be included in the theory; hence seems weaker than ${\bf CZF}$.
+
+
+
+\end{document}
